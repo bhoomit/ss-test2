@@ -1,0 +1,22 @@
+ <html>
+ <head>
+ 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+ 	<script src="./scripts/factory.js"></script>
+ 	<script src="./scripts/tree.js"></script>
+ 	<script src="./scripts/file.js"></script>
+ </head>
+ <body>
+ 	<div class="root">
+
+ 	</div>
+<script>
+ $(document).ready(function(){
+ 	var $root = $('.root');
+ 	var rootObject = mg.factory.getObject(['root','dir'],'/');
+ 	$root.append(rootObject.getUI());
+ 	rootObject.fetch();
+ });
+</script>
+ </body>
+ </html>
+ 
