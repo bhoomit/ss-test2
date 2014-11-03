@@ -1,15 +1,20 @@
 var tree = function(path, name) {
     this.path = path;
+    this.fetched = false;
+    this.padding = path.replace(/[^a]/g, "").length + 1;
     this.name = name;
     this.$dom = null;
     this.fetch = function () {
-    	var url = 'http://localhost:5000/list?p=' + this.path;
+        this.$dom.toggleClass('expanded');
+        if(this.fetched) return;
+    	var url = 'http://skyscanner-test-161452.euw1.nitrousbox.com:5000/list?p=' + this.path;
     	var thisObj = this;
-    	if(this.path != '/' && this.name != "root") url += "/" + this.name; 
+    	if(this.path != '/' || this.name != "root") url += "/" + this.name; 
          $.ajax({
             url: url,
             dataType: 'jsonp',
             success: function(resp){
+                if(typeof resp.data != 'undefined' && resp.data.length > 0)
             	$.each(resp.data, function(index, item){
             		thisObj.addObject(item);
             	});
@@ -18,9 +23,11 @@ var tree = function(path, name) {
     };
     this.getUI = function(){
     	var thisObj = this;
-    	this.$dom = $("<div>dir:: " + this.name + "</div>");
+    	this.$dom = $("<div class='directory' style='padding-left:" + this.padding * 10 + "px;'>dir:: " + this.name + "</div>");
     	this.$dom.click(function(){
-    		thisObj.fetch();
+    		setTimeout(function(){
+                thisObj.fetch();
+            },500);
     	});
     	return this.$dom
     };
